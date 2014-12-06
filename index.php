@@ -39,7 +39,7 @@ define('DB_HOST','127.0.0.1');
 define('DB_PORT',3306);
 define('DB_NAME','blog');
 define('DB_USER','root');
-define('DB_PASS',123456);
+define('DB_PASS','root');
 
 //sqlite 数据库配置
 define('SQLITE',APP_PATH.'data.db');
@@ -49,11 +49,7 @@ define('DB',0);
 ///添加一个正则路由,数组第一个为控制器,第二个为方法,前面的将作为该方法的第一个实参,以此类推
 
 
-
-//也可以添加自动加载,或者加载程序设置
-S('functions');//加载扩展函数库
-
-
+S('class/messager');
 
 //配置完,可以启动啦
 app::start();

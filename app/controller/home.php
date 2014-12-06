@@ -16,7 +16,7 @@ class home extends base
 	 */
 	function index()
 	{
-		
+				
 	}
 	/**
 	 * 若开启了自定义异常路由,则必须存在Error404和Error500方法
