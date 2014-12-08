@@ -1,14 +1,16 @@
-
+	<!-- template begin -->
 	<div id="comment-template">
 		<div id="thread-list">
-			<?php loopData($data);  function loopData($data){ foreach($data as $item){ ?>
+			<?php if($data){ loopData($data); } else{ ?>
+				<p align="center">还没有评论哦,快来抢沙发!</p>
+			<?php }  function loopData($data){ foreach($data as $item){ ?>
 				<article class="comment-<?=$item['pid']==0?'thread':'child'?>">
 
-					<div class="comment-main">
+					<div class="comment-main" id="comment-<?=$item['id']?>">
 
 						<section class="comment-avator">
-							<img src="https://secure.gravatar.com/avatar/f713666d2485ae4ec6cab07f5dea18ea?s=40" class="avatar avatar-40" height="40" width="40">
-							<a class="comment-reply-link" href="javascript:void(0)">回复</a>
+							<img src="https://secure.gravatar.com/avatar/f713666d2485ae4ec6cab07f5dea18ea?s=40" class="avatar-40">
+							<a class="comment-reply-link" href="javascript:void(0)" data-comment="<?=$item['id']?>">回复</a>
 						</section>
 						<section class="comment-container">
 							<div class="comment-meta">
@@ -56,4 +58,5 @@
 				<p style="height:20px;"><span id="form-tips"></span></p>
 			</form>
 		</div>
-	</div> <!-- end template -->
+	</div>
+	<!-- end template -->
