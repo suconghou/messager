@@ -1,7 +1,7 @@
-						<link href="http://127.0.0.2/static/css/messager.css" rel="stylesheet">
+						<link href="/static/css/default.css" rel="stylesheet">
 						<div id="comment-template">
 							<ol id="thread-list">
-								
+
 								<?php foreach($data as $item):?>
 
 								<li class="comment-thread">
@@ -21,7 +21,7 @@
 											</div>
 										</section>
 									</div>
-									
+
 									<ul class="comment-children">
 										<li>
 											<div class="comment-main">
@@ -37,7 +37,7 @@
 													<div class="comment-text">
 														<p><span class="at">@路易大叔</span>不要酱紫，加班加成狗了，就连周末也
 													</div>
-												</section>				
+												</section>
 											</div>
 											<ul class="comment-children">
 												<li>
@@ -54,10 +54,10 @@
 															<div class="comment-text">
 																<p>这里有免费的，你考虑啊这里有免费的，你考虑啊这里有免费的，你考虑啊这里有免费的，你考虑啊？</p>
 															</div>
-														</section>				
+														</section>
 													</div>
 													<ul class="comment-children">
-														
+
 													</ul>
 												</li>
 											</ul>

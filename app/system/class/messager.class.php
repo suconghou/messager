@@ -5,7 +5,7 @@
 */
 class messager
 {
-	private static $allTheme=array('default'); //所有主题
+	private static $themes=['default']; //所有主题
 	private static $theme;//当前加载的主题
 	private static $db;
 	private static $key;
@@ -64,13 +64,13 @@ class messager
 				$path[$id]='$p=&$tree'."[$id]";
 				$tree[$id]=$item;
 			}
-	
+
 		} //end foreach
-		
+
 		return array('num'=>count($tree),'data'=>$tree);
 	}
 	/**
-	 * 对格式化好的数据分页处理 
+	 * 对格式化好的数据分页处理
 	 */
 	function dataPage($page)
 	{
