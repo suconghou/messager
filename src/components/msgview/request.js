@@ -4,11 +4,15 @@ export const avatar = u => {
 	return `https://gravatar.loli.net/avatar/${u}`;
 };
 
-const baseURL = "/messager";
+const baseURL = "http://127.0.0.1:9900/messager";
 
 // type, page , order
-export const getList = (ns, kid, data) => {
-	const u = baseURL + `/ajax/${ns}/${kid}`;
+export const getList = (ns, kid) => {
+	const u = baseURL + `/ajax/getList`;
+	const data = {
+		ns,
+		kid
+	};
 	const body = JSON.stringify(data);
 	return fetch(u, {
 		body,
@@ -20,7 +24,9 @@ export const getList = (ns, kid, data) => {
 };
 
 export const create = (ns, kid, data) => {
-	const u = baseURL + `/create/${ns}/${kid}`;
+	data.ns = ns;
+	data.kid = kid;
+	const u = baseURL + `/ajax/create`;
 	const body = JSON.stringify(data);
 	return fetch(u, {
 		body,

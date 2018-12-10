@@ -59,7 +59,7 @@
 		}
 		.text {
 			margin: 10px 10px 0 0;
-			line-height: 1.2;
+			line-height: 1.6;
 			font-size: 12px;
 			min-height: 20px;
 		}
@@ -71,7 +71,13 @@
 				color: #fd6262;
 			}
 		}
-	}
+    }
+    .sub-create{
+        padding-left: 10px;
+    }
+    .sub-item{
+        padding-left: 30px;
+    }
 }
 </style>
 <template>
@@ -90,13 +96,33 @@
                 </div>
             </div>
         </div>
+        <div class="sub-create" v-if="pid==data.id">
+            <create ref="create" :pid="data.id" :ns="ns" :kid="kid" @setpid="setpid" @reload="reload" :cancel="true" />
+        </div>
+        <div class="sub-item" v-if="data.child">
+            <item v-for="item in data.child" :ns="ns" :kid="kid" :pid="pid" :key="item.id" :data="item" @setpid="setpid" @reload="reload" />
+        </div>
     </div>
 </template>
 <script>
+import create from './create'
 import { avatar } from "./request";
 import { timeBefore } from "./util";
 export default {
+    name:'item',
 	props: {
+        ns: {
+			type: String,
+			required: true
+		},
+		kid: {
+			type: String,
+			required: true
+        },
+        pid: {
+			type: [String, Number],
+			default: 0
+		},
 		data: {
 			type: Object,
 			required: true
@@ -104,7 +130,10 @@ export default {
 	},
 	data() {
 		return {};
-	},
+    },
+    components:{
+        create,
+    },
 	computed: {
 		avatar() {
 			return avatar(this.data.avatar);
@@ -118,14 +147,25 @@ export default {
 		content() {
 			return this.data.content;
 		}
-	},
+    },
+    mounted(){
+        console.info(this.data);
+    },
 	methods: {
 		clickName() {
 			if (this.data.url) {
 				window.open(this.data.url);
 			}
 		},
-		doreply() {}
+		doreply() {
+            this.$emit('setpid',this.data.id);
+        },
+        setpid(pid){
+            this.$emit('setpid',pid);
+        },
+        reload(){
+            this.$emit('reload');
+        }
 	}
 };
 </script>
