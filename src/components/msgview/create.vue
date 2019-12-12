@@ -1,5 +1,5 @@
 <style lang="less">
-.messager-create {
+.message-create {
 	.form-info {
 		input {
 			height: 22px;
@@ -82,32 +82,32 @@
 }
 </style>
 <template>
-  <form class="messager-create">
-    <div class="form-info">
-      <div class="form-name">
-        <span class="t-name">昵称:</span>
-        <input type="text" name="name" v-model="name">
-      </div>
-      <div class="form-email">
-        <span class="t-email">邮箱:</span>
-        <input type="text" name="email" v-model="email">
-      </div>
-      <div class="form-url">
-        <span class="t-url">网址:</span>
-        <input type="text" name="url" v-model="url">
-      </div>
-    </div>
-    <div class="form-content">
-      <textarea v-model="content" class="text" placeholder="写点什么吧..."></textarea>
-      <button type="button" class="btn-submit" @click="send">发送</button>
-    </div>
-    <div class="form-others" v-if="cancel">
-      <span class="cancel-btn" @click="doCancel">取消</span>
-    </div>
-    <div class="form-text">
-      <p v-if="text" v-text="text"></p>
-    </div>
-  </form>
+	<form class="message-create">
+		<div class="form-info">
+			<div class="form-name">
+				<span class="t-name">昵称:</span>
+				<input type="text" name="name" v-model="name" />
+			</div>
+			<div class="form-email">
+				<span class="t-email">邮箱:</span>
+				<input type="text" name="email" v-model="email" />
+			</div>
+			<div class="form-url">
+				<span class="t-url">网址:</span>
+				<input type="text" name="url" v-model="url" />
+			</div>
+		</div>
+		<div class="form-content">
+			<textarea v-model="content" class="text" placeholder="写点什么吧..."></textarea>
+			<button type="button" class="btn-submit" @click="send">发送</button>
+		</div>
+		<div class="form-others" v-if="cancel">
+			<span class="cancel-btn" @click="doCancel">取消</span>
+		</div>
+		<div class="form-text">
+			<p v-if="text" v-text="text"></p>
+		</div>
+	</form>
 </template>
 <script>
 import { create } from './request';
@@ -117,7 +117,7 @@ export default {
 			type: String,
 			required: true
 		},
-		kid: {
+		thread: {
 			type: String,
 			required: true
 		},
@@ -155,15 +155,15 @@ export default {
 					url: this.url,
 					content: this.content
 				};
-				const res = await create(this.ns, this.kid, data);
+				const res = await create(this.ns, this.thread, data);
 				const json = await res.json();
 				this.text = json.msg;
 				if (json.code == 0) {
 					this.empty();
-                    this.$emit('reload');
+					this.$emit('reload');
 					setTimeout(() => {
-                        this.text = '';
-                        this.doCancel();
+						this.text = '';
+						this.doCancel();
 					}, 1500);
 				} else {
 				}

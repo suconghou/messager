@@ -1,5 +1,5 @@
 <style lang="less">
-.messager-item {
+.message-item {
 	margin: 20px 0;
 	.item {
 		position: relative;
@@ -40,7 +40,7 @@
 		}
 		&:before,
 		&:after {
-			content: "";
+			content: '';
 			border: solid 10px transparent;
 			border-left: none;
 			border-right-color: #bbbbbb;
@@ -65,61 +65,77 @@
 		}
 		.uname {
 			color: #555;
-            cursor: pointer;
-            margin-right: 5px;
+			cursor: pointer;
+			margin-right: 5px;
 			&:hover {
 				color: #fd6262;
 			}
 		}
-    }
-    .sub-create{
-        padding-left: 10px;
-    }
-    .sub-item{
-        padding-left: 30px;
-    }
+	}
+	.sub-create {
+		padding-left: 10px;
+	}
+	.sub-item {
+		padding-left: 30px;
+	}
 }
 </style>
 <template>
-    <div class="messager-item" :rel="data.id">
-        <div class="item">
-            <div class="meta">
-                <img class="avatar-img" :src="avatar" alt="">
-                <p class="replay" @click="doreply">回复</p>
-            </div>
-            <div class="content">
-                <p class="date">
-                    <a @click="clickName" class="uname" v-text="uname"></a>
-                    <span v-text="ctime"></span>
-                </p>
-                <div class="text" v-text="content">
-                </div>
-            </div>
-        </div>
-        <div class="sub-create" v-if="pid==data.id">
-            <create ref="create" :pid="data.id" :ns="ns" :kid="kid" @setpid="setpid" @reload="reload" :cancel="true" />
-        </div>
-        <div class="sub-item" v-if="data.child">
-            <item v-for="item in data.child" :ns="ns" :kid="kid" :pid="pid" :key="item.id" :data="item" @setpid="setpid" @reload="reload" />
-        </div>
-    </div>
+	<div class="message-item" :rel="data.id">
+		<div class="item">
+			<div class="meta">
+				<img class="avatar-img" :src="avatar" alt />
+				<p class="replay" @click="doreply">回复</p>
+			</div>
+			<div class="content">
+				<p class="date">
+					<a @click="clickName" class="uname" v-text="uname"></a>
+					<span v-text="ctime"></span>
+				</p>
+				<div class="text" v-text="content"></div>
+			</div>
+		</div>
+		<div class="sub-create" v-if="pid==data.id">
+			<create
+				ref="create"
+				:pid="data.id"
+				:ns="ns"
+				:thread="thread"
+				@setpid="setpid"
+				@reload="reload"
+				:cancel="true"
+			/>
+		</div>
+		<div class="sub-item" v-if="data.child">
+			<item
+				v-for="item in data.child"
+				:ns="ns"
+				:thread="thread"
+				:pid="pid"
+				:key="item.id"
+				:data="item"
+				@setpid="setpid"
+				@reload="reload"
+			/>
+		</div>
+	</div>
 </template>
 <script>
-import create from './create'
-import { avatar } from "./request";
-import { timeBefore } from "./util";
+import create from './create';
+import { avatar } from './request';
+import { timeBefore } from './util';
 export default {
-    name:'item',
+	name: 'item',
 	props: {
-        ns: {
+		ns: {
 			type: String,
 			required: true
 		},
-		kid: {
+		thread: {
 			type: String,
 			required: true
-        },
-        pid: {
+		},
+		pid: {
 			type: [String, Number],
 			default: 0
 		},
@@ -130,10 +146,10 @@ export default {
 	},
 	data() {
 		return {};
-    },
-    components:{
-        create,
-    },
+	},
+	components: {
+		create
+	},
 	computed: {
 		avatar() {
 			return avatar(this.data.avatar);
@@ -147,10 +163,8 @@ export default {
 		content() {
 			return this.data.content;
 		}
-    },
-    mounted(){
-        console.info(this.data);
-    },
+	},
+	mounted() {},
 	methods: {
 		clickName() {
 			if (this.data.url) {
@@ -158,14 +172,14 @@ export default {
 			}
 		},
 		doreply() {
-            this.$emit('setpid',this.data.id);
-        },
-        setpid(pid){
-            this.$emit('setpid',pid);
-        },
-        reload(){
-            this.$emit('reload');
-        }
+			this.$emit('setpid', this.data.id);
+		},
+		setpid(pid) {
+			this.$emit('setpid', pid);
+		},
+		reload() {
+			this.$emit('reload');
+		}
 	}
 };
 </script>

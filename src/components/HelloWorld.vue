@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
-      <messager ns="hi" kid="21"/>
-  </div>
+	<div class="hello">
+		<messager ns="hi" thread="21" />
+	</div>
 </template>
 
 
 <script>
-import messager from "./msgview/index.vue";
+import messager from './msgview/index.vue';
 
 export default {
 	props: {
