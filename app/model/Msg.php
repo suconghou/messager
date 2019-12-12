@@ -24,7 +24,8 @@ class Msg extends db
         ];
         $table = self::t($table);
         $orderLimit = [];
-        $data = self::find($where, $table, '*', $orderLimit);
+        $col = 'id,pid,name,email,url,avatar,content,time';
+        $data = self::find($where, $table, $col, $orderLimit);
         return $data;
     }
 }

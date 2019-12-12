@@ -53,6 +53,7 @@ class message
         $rule = [
             'name' => ['require' => '昵称必填', 'maxlength=30' => '您的昵称也太长了吧~'],
             'email' => ['require' => '邮箱必填', 'maxlength=50' => '这邮箱也太长了吧', 'email' => '请填写正确的邮箱格式呦'],
+            'url' => ['maxlength=100' => '网址太长啦', 'url' => '网址格式不正确'],
         ];
         $info = request::verify($rule, true, request::input());
         $data = self::jwtencode($info);
@@ -66,14 +67,18 @@ class message
     private function list()
     {
         $rule = [
-            'area' => ['require' => '区域必填', 'eq=default' => '区域类型错误'],
+            'area' => ['default' => 'default', 'eq=default' => '区域类型错误'],
             'ns' => ['require' => '站点必填'],
             'thread' => ['require' => '关联ID必填'],
+            'tree' => ['default' => 1, "tree值只能为0或1" => [0, 1, '0', '1']],
         ];
-        list('area' => $table, 'ns' => $ns, 'thread' => $thread) = request::verify($rule, true, request::input());
+        list('area' => $table, 'ns' => $ns, 'thread' => $thread, 'tree' => $tree) = request::verify($rule, true, request::input());
         $list = Msg::getList($table, $ns, $thread);
-        $tree = self::tree($list);
-        return json(['code' => 0, 'msg' => 'ok', 'data' => $tree]);
+        $count = count($list);
+        if ($tree) {
+            $list = self::tree($list);
+        }
+        return json(['code' => 0, 'count' => $count, 'msg' => 'ok', 'data' => $list]);
     }
 
 
@@ -83,7 +88,7 @@ class message
     private function create()
     {
         $rule = [
-            'area' => ['require' => '区域必填', 'eq=default' => '区域类型错误'],
+            'area' => ['default' => 'default', 'eq=default' => '区域类型错误'],
             'ns' => ['require' => '站点必填'],
             'thread' => ['require' => '关联ID必填'],
             'content' => ['require' => '内容必填', 'maxlength=2000' => '如此长篇大论可不好哦!'],
@@ -94,6 +99,7 @@ class message
         $info = self::jwtdecode($data['jwt']);
         $data['name'] = $info['name'];
         $data['email'] = $info['email'];
+        $data['url'] = $info['url'] ?? '';
         $ret = self::doCreate($data);
         if ($ret) {
             return json(['code' => 0, 'msg' => '评论已提交']);
