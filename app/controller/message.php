@@ -16,10 +16,12 @@ class message
     }
 
     function siteupdate()
-    { }
+    {
+    }
 
     function sitedelete()
-    { }
+    {
+    }
 
 
     ############# 消息管理 ##################
@@ -135,7 +137,7 @@ class message
     private static function jwtencode(array $data)
     {
         $data['expire'] = time() + 604800;
-        $str = base64_encode(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $str = base64_encode(json_encode($data, JSON_UNESCAPED_SLASHES));
         $domain = 'message';
         $signInfo = md5($str) . '|' . $domain;
         $sign = self::aesencode($signInfo);
@@ -146,23 +148,23 @@ class message
     {
         $arr = explode('.', $jwt);
         if (count($arr) !== 2) {
-            throw new Exception("invalid jwt token", -4);
+            throw new Exception("用户身份信息错误", -4);
         }
         list($infostr, $aesdata) = $arr;
-        $info = json_decode($infostr, true);
+        $info = json_decode(base64_decode($infostr), true);
         $signarr = explode('|', self::aesdecode($aesdata));
-        if (count($signarr) !== 2) {
-            throw new Exception("invalid jwt token", -5);
+        if (empty($info) || count($signarr) !== 2) {
+            throw new Exception("用户身份信息错误", -5);
         }
         list($sign, $domain) = $signarr;
         if ($domain !== 'message') {
-            throw new Exception("invalid jwt token", -6);
+            throw new Exception("用户身份信息错误", -6);
         }
         if (md5($infostr) !== $sign) {
-            throw new Exception("invalid jwt token", -7);
+            throw new Exception("用户身份信息错误", -7);
         }
         if (empty($info['expire']) || $info['expire'] < time()) {
-            throw new Exception("expired jwt token", -8);
+            throw new Exception("用户身份已过期", -8);
         }
         return $info;
     }
