@@ -1,6 +1,17 @@
 <style lang="less">
 .message-wrap {
 	margin: 15px 0;
+	position: relative;
+	&.loading::after {
+		content: ' ';
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		background: url('http://cdn.ourwill.cn/fed-static/img/loading.gif') no-repeat center;
+		background-size: 30px;
+	}
 	.comment-title {
 		padding: 10px;
 		font-size: 16px;
@@ -14,7 +25,7 @@
 }
 </style>
 <template>
-	<div class="message-wrap" v-if="!loading">
+	<div class="message-wrap" :class="cls">
 		<div class="comment-title">评论</div>
 		<div class="no-comment" v-if="lists.length==0">目前暂无评论~</div>
 		<div class="item-create" v-if="pid==0">
@@ -59,10 +70,16 @@ export default {
 		return {
 			loading: true,
 			pid: 0,
-			lists: []
+			lists: { num: 0, data: [] }
 		};
 	},
-	computed: {},
+	computed: {
+		cls() {
+			return {
+				loading: this.loading && this.lists.num == 0
+			};
+		}
+	},
 	created() {},
 	mounted() {
 		this.init();

@@ -86,15 +86,15 @@
 		<div class="form-info">
 			<div class="form-name">
 				<span class="t-name">昵称:</span>
-				<input type="text" name="name" v-model="name" />
+				<input type="text" name="name" v-model="jwtInfo.info.name" :readonly="r" />
 			</div>
 			<div class="form-email">
 				<span class="t-email">邮箱:</span>
-				<input type="text" name="email" v-model="email" />
+				<input type="text" name="email" v-model="jwtInfo.info.email" :readonly="r" />
 			</div>
 			<div class="form-url">
 				<span class="t-url">网址:</span>
-				<input type="text" name="url" v-model="url" />
+				<input type="text" name="url" v-model="jwtInfo.info.url" :readonly="r" />
 			</div>
 		</div>
 		<div class="form-content">
@@ -110,7 +110,7 @@
 	</form>
 </template>
 <script>
-import { create } from './request';
+import { create, getJwt, genJwt } from './request';
 export default {
 	props: {
 		ns: {
@@ -132,15 +132,37 @@ export default {
 	},
 	data() {
 		return {
-			name: '',
-			email: '',
-			url: '',
+			jwtInfo: {
+				info: {},
+				jwt: ''
+			},
 			content: '',
 			text: '',
 			loading: false
 		};
 	},
+	computed: {
+		r() {
+			return Boolean(this.jwtInfo.jwt);
+		}
+	},
+	beforeMount() {
+		this.parseInfo();
+	},
 	methods: {
+		parseInfo() {
+			const info = getJwt();
+			if (info) {
+				this.jwtInfo = info;
+			}
+		},
+		async reInitJwt() {
+			const { name, email, url } = this.jwtInfo.info;
+			const info = await genJwt(name, email, url);
+			if (info) {
+				this.jwtInfo = info;
+			}
+		},
 		async send() {
 			if (this.loading) {
 				return;
@@ -148,11 +170,12 @@ export default {
 			try {
 				this.loading = true;
 				this.text = '提交中...';
+				if (!this.jwtInfo.jwt) {
+					await this.reInitJwt();
+				}
 				const data = {
 					pid: this.pid,
-					name: this.name,
-					email: this.email,
-					url: this.url,
+					jwt: this.jwtInfo.jwt,
 					content: this.content
 				};
 				const res = await create(this.ns, this.thread, data);
@@ -161,10 +184,8 @@ export default {
 				if (json.code == 0) {
 					this.empty();
 					this.$emit('reload');
-					setTimeout(() => {
-						this.text = '';
-						this.doCancel();
-					}, 1500);
+					this.text = '';
+					this.doCancel();
 				} else {
 				}
 				console.info(res);

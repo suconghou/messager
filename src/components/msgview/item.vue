@@ -77,6 +77,21 @@
 	}
 	.sub-item {
 		padding-left: 30px;
+		.sub-item {
+			.sub-item {
+				.sub-item {
+					.sub-item {
+						.sub-item {
+							.sub-item {
+								.sub-item {
+									padding-left: 10px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 </style>
