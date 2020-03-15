@@ -59,7 +59,9 @@
 			<textarea v-model="content" class="ctext" placeholder="写点什么吧..."></textarea>
 		</div>
 		<div class="form-info">
-			<div class="form-user">{{jwtInfo.info.name}} & 头像</div>
+			<div class="form-user">
+				<auth @info="onInfo" @error="onError" />
+			</div>
 		</div>
 		<div class="action-btns">
 			<button type="button" class="btn-submit" @click="send">发送</button>
@@ -71,7 +73,8 @@
 	</form>
 </template>
 <script>
-import { create, getJwt, genJwt } from './request';
+import auth from './auth';
+import { create } from './request';
 export default {
 	props: {
 		ns: {
@@ -91,6 +94,9 @@ export default {
 			default: false
 		}
 	},
+	components: {
+		auth
+	},
 	data() {
 		return {
 			jwtInfo: {
@@ -103,22 +109,13 @@ export default {
 		};
 	},
 	computed: {},
-	beforeMount() {
-		this.parseInfo();
-	},
+	beforeMount() {},
 	methods: {
-		parseInfo() {
-			const info = getJwt();
-			if (info) {
-				this.jwtInfo = info;
-			}
+		onInfo(info) {
+			this.jwtInfo = info;
 		},
-		async reInitJwt() {
-			const { name, email, url } = this.jwtInfo.info;
-			const info = await genJwt(name, email, url);
-			if (info) {
-				this.jwtInfo = info;
-			}
+		onError(msg) {
+			this.text = msg;
 		},
 		async send() {
 			if (this.loading) {
@@ -128,7 +125,8 @@ export default {
 				this.loading = true;
 				this.text = '提交中...';
 				if (!this.jwtInfo.jwt) {
-					await this.reInitJwt();
+					this.text = '请先登录';
+					return;
 				}
 				const data = {
 					pid: this.pid,
@@ -144,6 +142,7 @@ export default {
 					this.text = '';
 					this.doCancel();
 				} else {
+					// 需提示错误,jwt无效等
 				}
 				console.info(res);
 				this.loading = false;
@@ -152,9 +151,6 @@ export default {
 			}
 		},
 		empty() {
-			this.name = '';
-			this.email = '';
-			this.url = '';
 			this.content = '';
 		},
 		doCancel() {
