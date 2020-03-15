@@ -3,10 +3,10 @@ export const avatar = u => {
 	return `https://gravatar.loli.net/avatar/${u}`;
 };
 
-const baseURL = "http://127.0.0.1/message";
+const baseURL = "http://127.0.0.1:9092/index.php";
 
 export const getList = (ns, thread) => {
-	const u = baseURL + `/ajax/list`;
+	const u = baseURL + `/message/ajax/list`;
 	const data = {
 		ns,
 		thread
@@ -21,7 +21,7 @@ export const getList = (ns, thread) => {
 export const create = (ns, thread, data) => {
 	data.ns = ns;
 	data.thread = thread;
-	const u = baseURL + `/ajax/create`;
+	const u = baseURL + `/message/ajax/create`;
 	const body = JSON.stringify(data);
 	return fetch(u, {
 		body,
@@ -29,28 +29,41 @@ export const create = (ns, thread, data) => {
 	});
 };
 
-export const auth = (name, email, url) => {
-	const data = { name, email }
-	if (url) {
-		data.url = url
-	}
+export const auth = (email, pass) => {
+	const data = { pass, email }
 	const body = JSON.stringify(data)
-	const u = baseURL + '/ajax/login'
+	const u = baseURL + '/sso/email_login'
 	return fetch(u, {
 		body,
 		method: 'POST'
 	})
 }
 
+export const refresh = async (jwt) => {
+	const data = { jwt }
+	const body = JSON.stringify(data)
+	const u = baseURL + '/sso/jwt_login'
+	const res = await fetch(u, {
+		body,
+		method: 'POST'
+	})
+	const json = await res.json()
+	if (json.code == 0) {
+		localStorage.setItem('jwt', json.data)
+		return json.data
+	}
+	throw new Error(json.msg)
+}
 
-export const genJwt = async (name, email, url) => {
-	const res = await auth(name, email, url)
+
+export const genJwt = async (email, pass) => {
+	const res = await auth(email, pass)
 	const json = await res.json();
 	if (json.code == 0) {
 		localStorage.setItem('jwt', json.data)
 		return getJwt()
 	}
-	return false
+	throw new Error(json.msg)
 }
 
 // 获取并校验,上层加try

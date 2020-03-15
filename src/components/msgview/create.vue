@@ -1,39 +1,14 @@
 <style lang="less">
 .message-create {
 	.form-info {
-		input {
-			height: 22px;
-			outline: none;
-			border: none;
-			width: ~'calc(100% - 50px)';
-		}
-		.form-name,
-		.form-email,
-		.form-url {
-			display: inline-block;
-			margin: 10px 0 0 10px;
-			width: 30%;
-			min-width: 100px;
-			border: 1px solid #eee;
-			font-size: 12px;
-			box-sizing: border-box;
-		}
-		.t-name,
-		.t-email,
-		.t-url {
-			display: inline-block;
-			width: 40px;
-			color: #aaa;
-			text-align: center;
-		}
 	}
 	.form-content {
-		margin: 10px 10px 0 10px;
+		margin: 10px 0 10px 0;
 		overflow: hidden;
 		border: 1px solid #eee;
 		display: inline-block;
 		box-sizing: border-box;
-		width: 96%;
+		width: 100%;
 		.text {
 			border: none;
 			outline: none;
@@ -60,7 +35,7 @@
 		}
 	}
 	.form-text {
-		margin: 0 0 0 10px;
+		margin: 10px 0 5px;
 		font-size: 12px;
 		height: 20px;
 		p {
@@ -69,7 +44,7 @@
 		}
 	}
 	.form-others {
-		margin: 0 0 0 10px;
+		margin: 0;
 		font-size: 12px;
 		.cancel-btn {
 			cursor: pointer;
@@ -84,17 +59,8 @@
 <template>
 	<form class="message-create">
 		<div class="form-info">
-			<div class="form-name">
-				<span class="t-name">昵称:</span>
-				<input type="text" name="name" v-model="jwtInfo.info.name" :readonly="r" />
-			</div>
-			<div class="form-email">
-				<span class="t-email">邮箱:</span>
-				<input type="text" name="email" v-model="jwtInfo.info.email" :readonly="r" />
-			</div>
-			<div class="form-url">
-				<span class="t-url">网址:</span>
-				<input type="text" name="url" v-model="jwtInfo.info.url" :readonly="r" />
+			<div class="form-user">
+				<auth @info="onInfo" @error="onError" />
 			</div>
 		</div>
 		<div class="form-content">
@@ -110,7 +76,8 @@
 	</form>
 </template>
 <script>
-import { create, getJwt, genJwt } from './request';
+import { create } from './request';
+import auth from './auth';
 export default {
 	props: {
 		ns: {
@@ -130,6 +97,9 @@ export default {
 			default: false
 		}
 	},
+	components: {
+		auth
+	},
 	data() {
 		return {
 			jwtInfo: {
@@ -141,27 +111,12 @@ export default {
 			loading: false
 		};
 	},
-	computed: {
-		r() {
-			return Boolean(this.jwtInfo.jwt);
-		}
-	},
-	beforeMount() {
-		this.parseInfo();
-	},
 	methods: {
-		parseInfo() {
-			const info = getJwt();
-			if (info) {
-				this.jwtInfo = info;
-			}
+		onInfo(info) {
+			this.jwtInfo = info;
 		},
-		async reInitJwt() {
-			const { name, email, url } = this.jwtInfo.info;
-			const info = await genJwt(name, email, url);
-			if (info) {
-				this.jwtInfo = info;
-			}
+		onError(msg) {
+			this.text = msg;
 		},
 		async send() {
 			if (this.loading) {
@@ -171,7 +126,8 @@ export default {
 				this.loading = true;
 				this.text = '提交中...';
 				if (!this.jwtInfo.jwt) {
-					await this.reInitJwt();
+					this.text = '请先登录';
+					return;
 				}
 				const data = {
 					pid: this.pid,
@@ -187,6 +143,7 @@ export default {
 					this.text = '';
 					this.doCancel();
 				} else {
+					this.text = json.msg;
 				}
 				console.info(res);
 				this.loading = false;
@@ -195,9 +152,6 @@ export default {
 			}
 		},
 		empty() {
-			this.name = '';
-			this.email = '';
-			this.url = '';
 			this.content = '';
 		},
 		doCancel() {
