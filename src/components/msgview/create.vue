@@ -1,63 +1,34 @@
 <style lang="less">
 .message-create {
 	.form-info {
-		input {
-			height: 22px;
-			outline: none;
-			border: none;
-			width: ~'calc(100% - 50px)';
-		}
-		.form-name,
-		.form-email,
-		.form-url {
-			display: inline-block;
-			margin: 10px 0 0 10px;
-			width: 30%;
-			min-width: 100px;
-			border: 1px solid #eee;
-			font-size: 12px;
-			box-sizing: border-box;
-		}
-		.t-name,
-		.t-email,
-		.t-url {
-			display: inline-block;
-			width: 40px;
-			color: #aaa;
-			text-align: center;
-		}
 	}
 	.form-content {
-		margin: 10px 10px 0 10px;
-		overflow: hidden;
-		border: 1px solid #eee;
-		display: inline-block;
-		box-sizing: border-box;
-		width: 96%;
-		.text {
-			border: none;
+		.ctext {
+			border: 2px solid #dbdfe4;
+			color: #2a2e2e;
 			outline: none;
 			resize: none;
-			width: ~'calc( 100% - 60px )';
-			height: 60px;
-			border: none;
-			float: left;
-			padding: 5px;
-		}
-		.btn-submit {
-			float: left;
-			height: 70px;
-			width: 50px;
-			background: #eee;
-			border: none;
-			display: block;
-			cursor: pointer;
-			outline: none;
-			color: #999;
-			&:hover {
-				background: #e5e5e5;
+			height: 74px;
+			padding: 7px;
+			border-radius: 4px;
+			width: 100%;
+			box-sizing: border-box;
+			&:focus {
+				border-color: rgba(29, 47, 58, 0.75);
 			}
 		}
+	}
+	.btn-submit {
+		outline: none;
+		background: rgba(29, 47, 58, 0.75);
+		border: none;
+		border-radius: 4px;
+		height: 35px;
+		width: 80px;
+		cursor: pointer;
+		float: right;
+		color: #fff;
+		font-size: 15px;
 	}
 	.form-text {
 		margin: 0 0 0 10px;
@@ -68,41 +39,32 @@
 			color: #f00;
 		}
 	}
-	.form-others {
-		margin: 0 0 0 10px;
-		font-size: 12px;
+	.action-btns {
+		margin: 10px 0 10px;
 		.cancel-btn {
+			outline: none;
+			border: none;
+			height: 35px;
+			width: 80px;
 			cursor: pointer;
-			color: #555;
-			&:hover {
-				color: #fd6262;
-			}
+			float: right;
+			color: #4990e2;
+			font-size: 13px;
 		}
 	}
 }
 </style>
 <template>
 	<form class="message-create">
-		<div class="form-info">
-			<div class="form-name">
-				<span class="t-name">昵称:</span>
-				<input type="text" name="name" v-model="jwtInfo.info.name" :readonly="r" />
-			</div>
-			<div class="form-email">
-				<span class="t-email">邮箱:</span>
-				<input type="text" name="email" v-model="jwtInfo.info.email" :readonly="r" />
-			</div>
-			<div class="form-url">
-				<span class="t-url">网址:</span>
-				<input type="text" name="url" v-model="jwtInfo.info.url" :readonly="r" />
-			</div>
-		</div>
 		<div class="form-content">
-			<textarea v-model="content" class="text" placeholder="写点什么吧..."></textarea>
-			<button type="button" class="btn-submit" @click="send">发送</button>
+			<textarea v-model="content" class="ctext" placeholder="写点什么吧..."></textarea>
 		</div>
-		<div class="form-others" v-if="cancel">
-			<span class="cancel-btn" @click="doCancel">取消</span>
+		<div class="form-info">
+			<div class="form-user">{{jwtInfo.info.name}} & 头像</div>
+		</div>
+		<div class="action-btns">
+			<button type="button" class="btn-submit" @click="send">发送</button>
+			<button type="button" class="cancel-btn" v-if="cancel" @click="doCancel">取消</button>
 		</div>
 		<div class="form-text">
 			<p v-if="text" v-text="text"></p>
@@ -141,11 +103,7 @@ export default {
 			loading: false
 		};
 	},
-	computed: {
-		r() {
-			return Boolean(this.jwtInfo.jwt);
-		}
-	},
+	computed: {},
 	beforeMount() {
 		this.parseInfo();
 	},

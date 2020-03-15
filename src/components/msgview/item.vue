@@ -1,4 +1,5 @@
 <style lang="less">
+@themeColor: #4990e2;
 .message-item {
 	margin: 20px 0;
 	.item {
@@ -7,77 +8,69 @@
 	.meta {
 		position: absolute;
 		left: 0;
-		width: 80px;
+		width: 70px;
 		height: 100%;
 		.avatar-img {
 			display: block;
 			margin: 0 auto;
-			width: 40px;
-			height: 40px;
-		}
-		.replay {
-			margin: 5px 0 0;
-			font-size: 12px;
-			text-align: center;
-			color: #555;
-			cursor: pointer;
-			&:hover {
-				color: #fd6262;
-			}
+			width: 48px;
+			height: 48px;
+			border-radius: 3px;
 		}
 	}
 	.content {
-		margin-left: 80px;
-		border-left: solid #bbbbbb 2px;
-		padding: 10px;
+		margin-left: 70px;
+		padding: 0 10px 10px 0;
 		position: relative;
-		border-radius: 3px;
 		&.admin {
 			background-color: #f5f5f5;
 			&:after {
 				border-right-color: #f5f5f5;
 			}
 		}
-		&:before,
-		&:after {
-			content: '';
-			border: solid 10px transparent;
-			border-left: none;
-			border-right-color: #bbbbbb;
-			position: absolute;
-			left: -10px;
-			top: 10px;
-		}
-		&:after {
-			border-right-color: #fff;
-			left: -8px;
-		}
 		.date {
 			margin: 0;
 			font-size: 12px;
-			color: #333;
+			color: #7f919e;
 		}
 		.text {
 			margin: 10px 10px 0 0;
 			line-height: 1.6;
-			font-size: 12px;
+			font-size: 14px;
 			min-height: 20px;
+			color: #2a2e2e;
+			font-weight: 300;
 		}
 		.uname {
-			color: #555;
-			cursor: pointer;
+			color: @themeColor;
 			margin-right: 5px;
+			font-weight: 600;
+			font-size: 13px;
 			&:hover {
-				color: #fd6262;
+				cursor: pointer;
 			}
 		}
 	}
+	.replay {
+		margin: 5px 0 0;
+		font-size: 13px;
+		text-align: left;
+		color: @themeColor;
+		&:hover {
+			cursor: pointer;
+		}
+	}
 	.sub-create {
-		padding-left: 10px;
+		width: 100%;
+		margin: 10px 0 10px;
 	}
 	.sub-item {
 		padding-left: 30px;
 		.sub-item {
+			.avatar-img {
+				width: 40px;
+				height: 40px;
+			}
 			.sub-item {
 				.sub-item {
 					.sub-item {
@@ -100,7 +93,6 @@
 		<div class="item">
 			<div class="meta">
 				<img class="avatar-img" :src="avatar" alt />
-				<p class="replay" @click="doreply">回复</p>
 			</div>
 			<div class="content">
 				<p class="date">
@@ -108,19 +100,21 @@
 					<span v-text="ctime"></span>
 				</p>
 				<div class="text" v-text="content"></div>
+				<p class="replay" @click="doreply">回复</p>
+				<div class="sub-create" v-if="pid==data.id">
+					<create
+						ref="create"
+						:pid="data.id"
+						:ns="ns"
+						:thread="thread"
+						@setpid="setpid"
+						@reload="reload"
+						:cancel="true"
+					/>
+				</div>
 			</div>
 		</div>
-		<div class="sub-create" v-if="pid==data.id">
-			<create
-				ref="create"
-				:pid="data.id"
-				:ns="ns"
-				:thread="thread"
-				@setpid="setpid"
-				@reload="reload"
-				:cancel="true"
-			/>
-		</div>
+
 		<div class="sub-item" v-if="data.child">
 			<item
 				v-for="item in data.child"
