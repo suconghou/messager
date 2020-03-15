@@ -31,7 +31,6 @@
 		font-size: 15px;
 	}
 	.form-text {
-		margin: 0 0 0 10px;
 		font-size: 12px;
 		height: 20px;
 		p {
