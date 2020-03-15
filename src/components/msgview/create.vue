@@ -4,27 +4,25 @@
 	}
 	.form-content {
 		.ctext {
-			border: 2px solid #dbdfe4;
-			color: #2a2e2e;
+			border: 1px solid #cfd8dc;
+			color: #333;
 			outline: none;
 			resize: none;
-			height: 74px;
+			height: 140px;
 			padding: 7px;
-			border-radius: 4px;
 			width: 100%;
 			box-sizing: border-box;
 			&:focus {
-				border-color: rgba(29, 47, 58, 0.75);
+				border-color: #93b7c7;
 			}
 		}
 	}
 	.btn-submit {
 		outline: none;
-		background: rgba(29, 47, 58, 0.75);
+		background: #6198c3;
 		border: none;
-		border-radius: 4px;
-		height: 35px;
-		width: 80px;
+		height: 30px;
+		width: 60px;
 		cursor: pointer;
 		float: right;
 		color: #fff;
@@ -43,11 +41,11 @@
 		.cancel-btn {
 			outline: none;
 			border: none;
-			height: 35px;
-			width: 80px;
+			height: 30px;
+			width: 60px;
 			cursor: pointer;
 			float: right;
-			color: #4990e2;
+			color: #2196f3;
 			font-size: 13px;
 		}
 	}

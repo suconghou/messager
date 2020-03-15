@@ -35,6 +35,9 @@
 		font-size: 14px;
 		padding: 10px;
 	}
+	.item-create {
+		padding: 10px 0 30px 0;
+	}
 }
 </style>
 <template>
@@ -43,12 +46,10 @@
 			<div class="c-num">{{count}}条评论</div>
 		</div>
 		<div class="no-comment" v-if="!count">目前暂无评论~</div>
-		<div class="item-create" v-if="pid==0">
-			<create ref="create" :ns="ns" :thread="thread" :pid="pid" @setpid="setpid" @reload="reload" />
-		</div>
+
 		<div class="item-list">
 			<item
-				v-for="item in lists.data"
+				v-for="item in lists"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
@@ -57,6 +58,9 @@
 				@setpid="setpid"
 				@reload="reload"
 			/>
+		</div>
+		<div class="item-create" v-if="pid==0">
+			<create ref="create" :ns="ns" :thread="thread" :pid="pid" @setpid="setpid" @reload="reload" />
 		</div>
 	</div>
 </template>
@@ -86,7 +90,7 @@ export default {
 			loading: true,
 			pid: 0,
 			count: 0,
-			lists: { num: 0, data: [] }
+			lists: []
 		};
 	},
 	computed: {
@@ -110,7 +114,7 @@ export default {
 					this.lists = json.data;
 					this.count = json.count;
 				} else {
-					this.lists = { num: 0, data: [] };
+					this.lists = [];
 					this.count = 0;
 				}
 				this.loading = false;

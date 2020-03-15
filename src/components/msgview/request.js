@@ -9,7 +9,8 @@ export const getList = (ns, thread) => {
 	const u = baseURL + `/ajax/list`;
 	const data = {
 		ns,
-		thread
+		thread,
+		tree: 0,
 	};
 	const body = JSON.stringify(data);
 	return fetch(u, {
