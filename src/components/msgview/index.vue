@@ -50,6 +50,7 @@
 		<div class="item-list">
 			<item
 				v-for="item in lists"
+				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
@@ -57,10 +58,19 @@
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
+				@info="i=>uinfo=i"
 			/>
 		</div>
 		<div class="item-create" v-if="pid==0">
-			<create ref="create" :ns="ns" :thread="thread" :pid="pid" @setpid="setpid" @reload="reload" />
+			<create
+				ref="create"
+				:ns="ns"
+				:thread="thread"
+				:pid="pid"
+				@setpid="setpid"
+				@reload="reload"
+				@info="i=>uinfo=i"
+			/>
 		</div>
 	</div>
 </template>
@@ -90,7 +100,8 @@ export default {
 			loading: true,
 			pid: 0,
 			count: 0,
-			lists: []
+			lists: [],
+			uinfo: {}
 		};
 	},
 	computed: {

@@ -50,9 +50,17 @@
 			border-bottom-color: transparent;
 		}
 		&.admin {
-			background-color: #f5f5f5;
+			background-color: #f9f9f9;
 			&:after {
-				border-right-color: #f5f5f5;
+				border-color: #f9f9f9;
+				border-left-color: transparent;
+				border-top-color: transparent;
+				border-bottom-color: transparent;
+			}
+		}
+		&.me {
+			.text {
+				color: #2196f3;
 			}
 		}
 		.date {
@@ -90,7 +98,7 @@
 			<div class="meta">
 				<img class="avatar-img" :src="avatar" @click="doreply" alt="回复他" />
 			</div>
-			<div class="content">
+			<div class="content" :class="{admin:data.admin,me:uinfo.i===data.uid}">
 				<p class="date">
 					<a @click="clickName" class="uname" v-text="uname"></a>
 					<span>发表于</span>
@@ -105,6 +113,7 @@
 						:thread="thread"
 						@setpid="setpid"
 						@reload="reload"
+						@info="i=>$emit('info',i)"
 						:cancel="true"
 					/>
 				</div>
@@ -114,6 +123,7 @@
 		<div class="sub-item" v-if="data.child">
 			<item
 				v-for="item in data.child"
+				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
@@ -121,6 +131,7 @@
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
+				@info="i=>$emit('info',i)"
 			/>
 		</div>
 	</div>
@@ -145,6 +156,10 @@ export default {
 			default: 0
 		},
 		data: {
+			type: Object,
+			required: true
+		},
+		uinfo: {
 			type: Object,
 			required: true
 		}
