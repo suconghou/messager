@@ -113,6 +113,7 @@ export default {
 	methods: {
 		onInfo(info) {
 			this.jwtInfo = info;
+			this.$emit('info', info.info);
 		},
 		onError(msg) {
 			this.text = msg;
