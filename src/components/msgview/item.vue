@@ -25,12 +25,13 @@
 		&.me {
 			.text {
 				color: #000;
+				font-weight: 400;
 			}
 		}
 		&.admin {
 			.text {
 				color: #1800d6;
-				font-weight: 600;
+				font-weight: 400;
 			}
 		}
 		.date {
