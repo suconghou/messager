@@ -32,6 +32,9 @@
 		padding: 10px;
 		position: relative;
 		border-radius: 3px;
+		&.me {
+			color: #00a1ff;
+		}
 		&.admin {
 			background-color: #f5f5f5;
 			&:after {
@@ -102,7 +105,7 @@
 				<img class="avatar-img" :src="avatar" alt />
 				<p class="replay" @click="doreply">回复</p>
 			</div>
-			<div class="content">
+			<div class="content" :class="{admin:data.admin,me:me}">
 				<p class="date">
 					<a @click="clickName" class="uname" v-text="uname"></a>
 					<span v-text="ctime"></span>
@@ -118,12 +121,14 @@
 				:thread="thread"
 				@setpid="setpid"
 				@reload="reload"
+				@info="i=>$emit('info',i)"
 				:cancel="true"
 			/>
 		</div>
 		<div class="sub-item" v-if="data.child">
 			<item
 				v-for="item in data.child"
+				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
@@ -131,6 +136,7 @@
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
+				@info="i=>$emit('info',i)"
 			/>
 		</div>
 	</div>
@@ -157,6 +163,10 @@ export default {
 		data: {
 			type: Object,
 			required: true
+		},
+		uinfo: {
+			type: Object,
+			required: true
 		}
 	},
 	data() {
@@ -177,6 +187,9 @@ export default {
 		},
 		content() {
 			return this.data.content;
+		},
+		me() {
+			return this.data.uid === this.uinfo.i;
 		}
 	},
 	mounted() {},

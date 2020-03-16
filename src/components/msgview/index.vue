@@ -29,11 +29,20 @@
 		<div class="comment-title">{{count}}条评论</div>
 		<div class="no-comment" v-if="!count">目前暂无评论~</div>
 		<div class="item-create" v-if="pid==0">
-			<create ref="create" :ns="ns" :thread="thread" :pid="pid" @setpid="setpid" @reload="reload" />
+			<create
+				ref="create"
+				:ns="ns"
+				:thread="thread"
+				:pid="pid"
+				@setpid="setpid"
+				@reload="reload"
+				@info="i=>uinfo=i"
+			/>
 		</div>
 		<div class="item-list">
 			<item
 				v-for="item in lists.data"
+				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
@@ -41,6 +50,7 @@
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
+				@info="i=>uinfo=i"
 			/>
 		</div>
 	</div>
@@ -71,7 +81,8 @@ export default {
 			loading: true,
 			pid: 0,
 			count: 0,
-			lists: { num: 0, data: [] }
+			lists: { num: 0, data: [] },
+			uinfo: {}
 		};
 	},
 	computed: {
