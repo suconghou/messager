@@ -127,6 +127,10 @@ export default {
 					this.text = '请先登录';
 					return;
 				}
+				if (!this.content) {
+					this.text = '内容必填';
+					return;
+				}
 				const data = {
 					pid: this.pid,
 					jwt: this.jwtInfo.jwt,
