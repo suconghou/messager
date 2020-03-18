@@ -65,6 +65,7 @@
 			line-height: 1.6;
 			font-size: 12px;
 			min-height: 20px;
+			white-space: pre-line;
 		}
 		.uname {
 			color: #555;
