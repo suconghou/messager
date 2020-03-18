@@ -73,6 +73,7 @@
 			line-height: 1.6;
 			font-size: 16px;
 			color: #333;
+			white-space: pre-line;
 		}
 		.uname {
 			color: #666;
