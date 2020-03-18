@@ -46,6 +46,7 @@
 			min-height: 20px;
 			color: #2a2e2e;
 			font-weight: 300;
+			white-space: pre-line;
 		}
 		.uname {
 			color: @themeColor;
