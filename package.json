@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "buildwc":"vue-cli-service build --target wc-async --name air-messager 'src/components/msgview/index.vue'"
+    "buildwc": "vue-cli-service build --target wc-async --name air-messager 'src/components/msgview/index.vue'"
   },
   "dependencies": {
     "vue": "^2.5.17"
