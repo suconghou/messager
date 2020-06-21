@@ -4,19 +4,17 @@
 	</div>
 </template>
 
-
 <script>
 import messager from './msgview/index.vue';
 
 export default {
-	props: {
-		msg: String
-	},
 	components: {
-		messager
-	}
+		messager,
+	},
+	props: {
+		msg: String,
+	},
 };
 </script>
 
-<style  lang="less">
-</style>
+<style lang="less"></style>

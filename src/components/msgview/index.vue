@@ -26,9 +26,11 @@
 </style>
 <template>
 	<div class="message-wrap" :class="cls">
-		<div class="comment-title">{{count}}条评论</div>
-		<div class="no-comment" v-if="!count">目前暂无评论~</div>
-		<div class="item-create" v-if="pid==0">
+		<div class="comment-title">{{ count }}条评论</div>
+		<div v-if="!count" class="no-comment">
+			目前暂无评论~
+		</div>
+		<div v-if="pid == 0" class="item-create">
 			<create
 				ref="create"
 				:ns="ns"
@@ -36,21 +38,21 @@
 				:pid="pid"
 				@setpid="setpid"
 				@reload="reload"
-				@info="i=>uinfo=i"
+				@info="(i) => (uinfo = i)"
 			/>
 		</div>
 		<div class="item-list">
 			<item
 				v-for="item in lists.data"
+				:key="item.id"
 				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
-				:key="item.id"
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
-				@info="i=>uinfo=i"
+				@info="(i) => (uinfo = i)"
 			/>
 		</div>
 	</div>
@@ -62,19 +64,19 @@ import { buildTree } from './util';
 import { getList } from './request';
 
 export default {
+	components: {
+		item,
+		create,
+	},
 	props: {
 		ns: {
 			type: String,
-			required: true
+			required: true,
 		},
 		thread: {
 			type: String,
-			required: true
-		}
-	},
-	components: {
-		item,
-		create
+			required: true,
+		},
 	},
 	data() {
 		return {
@@ -82,15 +84,15 @@ export default {
 			pid: 0,
 			count: 0,
 			lists: { num: 0, data: [] },
-			uinfo: {}
+			uinfo: {},
 		};
 	},
 	computed: {
 		cls() {
 			return {
-				loading: this.loading && this.lists.num == 0
+				loading: this.loading && this.lists.num == 0,
 			};
-		}
+		},
 	},
 	created() {},
 	mounted() {
@@ -119,9 +121,7 @@ export default {
 		},
 		reload() {
 			this.init();
-		}
-	}
+		},
+	},
 };
 </script>
-
-

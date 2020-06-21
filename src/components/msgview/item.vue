@@ -104,40 +104,42 @@
 		<div class="item">
 			<div class="meta">
 				<img class="avatar-img" :src="avatar" alt />
-				<p class="replay" @click="doreply">回复</p>
-			</div>
-			<div class="content" :class="{admin:data.admin,me:me}">
-				<p class="date">
-					<a @click="clickName" class="uname" v-text="uname"></a>
-					<span v-text="ctime"></span>
+				<p class="replay" @click="doreply">
+					回复
 				</p>
-				<div class="text" v-text="content"></div>
+			</div>
+			<div class="content" :class="{ admin: data.admin, me: me }">
+				<p class="date">
+					<a class="uname" @click="clickName" v-text="uname" />
+					<span v-text="ctime" />
+				</p>
+				<div class="text" v-text="content" />
 			</div>
 		</div>
-		<div class="sub-create" v-if="pid==data.id">
+		<div v-if="pid == data.id" class="sub-create">
 			<create
 				ref="create"
 				:pid="data.id"
 				:ns="ns"
 				:thread="thread"
+				:cancel="true"
 				@setpid="setpid"
 				@reload="reload"
-				@info="i=>$emit('info',i)"
-				:cancel="true"
+				@info="(i) => $emit('info', i)"
 			/>
 		</div>
-		<div class="sub-item" v-if="data.child">
+		<div v-if="data.child" class="sub-item">
 			<item
 				v-for="item in data.child"
+				:key="item.id"
 				:uinfo="uinfo"
 				:ns="ns"
 				:thread="thread"
 				:pid="pid"
-				:key="item.id"
 				:data="item"
 				@setpid="setpid"
 				@reload="reload"
-				@info="i=>$emit('info',i)"
+				@info="(i) => $emit('info', i)"
 			/>
 		</div>
 	</div>
@@ -147,34 +149,34 @@ import create from './create';
 import { avatar } from './request';
 import { timeBefore } from './util';
 export default {
-	name: 'item',
+	name: 'Item',
+	components: {
+		create,
+	},
 	props: {
 		ns: {
 			type: String,
-			required: true
+			required: true,
 		},
 		thread: {
 			type: String,
-			required: true
+			required: true,
 		},
 		pid: {
 			type: [String, Number],
-			default: 0
+			default: 0,
 		},
 		data: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		uinfo: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {};
-	},
-	components: {
-		create
 	},
 	computed: {
 		avatar() {
@@ -191,7 +193,7 @@ export default {
 		},
 		me() {
 			return this.data.uid === this.uinfo.i;
-		}
+		},
 	},
 	mounted() {},
 	methods: {
@@ -208,9 +210,7 @@ export default {
 		},
 		reload() {
 			this.$emit('reload');
-		}
-	}
+		},
+	},
 };
 </script>
-
-

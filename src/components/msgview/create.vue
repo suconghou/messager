@@ -64,14 +64,16 @@
 			</div>
 		</div>
 		<div class="form-content">
-			<textarea v-model="content" class="text" placeholder="写点什么吧..."></textarea>
-			<button type="button" class="btn-submit" @click="send">发送</button>
+			<textarea v-model="content" class="text" placeholder="写点什么吧..." />
+			<button type="button" class="btn-submit" @click="send">
+				发送
+			</button>
 		</div>
-		<div class="form-others" v-if="cancel">
+		<div v-if="cancel" class="form-others">
 			<span class="cancel-btn" @click="doCancel">取消</span>
 		</div>
 		<div class="form-text">
-			<p v-if="text" v-text="text"></p>
+			<p v-if="text" v-text="text" />
 		</div>
 	</form>
 </template>
@@ -79,36 +81,36 @@
 import { create } from './request';
 import auth from './auth';
 export default {
+	components: {
+		auth,
+	},
 	props: {
 		ns: {
 			type: String,
-			required: true
+			required: true,
 		},
 		thread: {
 			type: String,
-			required: true
+			required: true,
 		},
 		pid: {
 			type: [String, Number],
-			default: 0
+			default: 0,
 		},
 		cancel: {
 			type: Boolean,
-			default: false
-		}
-	},
-	components: {
-		auth
+			default: false,
+		},
 	},
 	data() {
 		return {
 			jwtInfo: {
 				info: {},
-				jwt: ''
+				jwt: '',
 			},
 			content: '',
 			text: '',
-			loading: false
+			loading: false,
 		};
 	},
 	methods: {
@@ -137,7 +139,7 @@ export default {
 				const data = {
 					pid: this.pid,
 					jwt: this.jwtInfo.jwt,
-					content: this.content
+					content: this.content,
 				};
 				const res = await create(this.ns, this.thread, data);
 				const json = await res.json();
@@ -161,9 +163,7 @@ export default {
 		},
 		doCancel() {
 			this.$emit('setpid', 0);
-		}
-	}
+		},
+	},
 };
 </script>
-
-

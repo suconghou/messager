@@ -1,14 +1,16 @@
 <template>
 	<div class="auth-form">
 		<div v-if="info">
-			<span class="name">{{info.info.n}}</span>
+			<span class="name">{{ info.info.n }}</span>
 			<img class="ava" :src="ava" alt />
 			<span class="reset" @click="logout">切换账号</span>
 		</div>
 		<div v-else>
-			<input type="text" placeholder="用户名" class="l-i" v-model="email" />
-			<input type="password" placeholder="密码" class="l-i" v-model="pass" />
-			<button class="l-btn" type="button" @click="doLogin">登陆</button>
+			<input v-model="email" type="text" placeholder="用户名" class="l-i" />
+			<input v-model="pass" type="password" placeholder="密码" class="l-i" />
+			<button class="l-btn" type="button" @click="doLogin">
+				登陆
+			</button>
 		</div>
 	</div>
 </template>
@@ -20,18 +22,19 @@ export default {
 		return {
 			info: null,
 			email: '',
-			pass: ''
+			pass: '',
 		};
-	},
-	created() {
-		this.init();
 	},
 	computed: {
 		ava() {
 			if (this.info) {
 				return avatar(this.info.info.a);
 			}
-		}
+			return '';
+		},
+	},
+	created() {
+		this.init();
 	},
 	methods: {
 		async init() {
@@ -72,8 +75,8 @@ export default {
 		async logout() {
 			this.info = null;
 			this.$emit('info', { jwt: '', info: {} });
-		}
-	}
+		},
+	},
 };
 </script>
 
