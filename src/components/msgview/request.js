@@ -3,7 +3,7 @@ export const avatar = u => {
 	return `https://gravatar.loli.net/avatar/${u}`;
 };
 
-const baseURL = "http://127.0.0.1/message";
+const baseURL = "http://127.0.0.1:9988/message";
 
 export const getList = (ns, thread) => {
 	const u = baseURL + `/ajax/list`;
