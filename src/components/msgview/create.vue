@@ -155,6 +155,7 @@ export default {
 				console.info(res);
 				this.loading = false;
 			} catch (e) {
+				this.loading = false;
 				console.error(e);
 			}
 		},
