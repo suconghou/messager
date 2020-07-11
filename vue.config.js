@@ -1,5 +1,5 @@
 module.exports = {
-    productionSourceMap: false,
+	productionSourceMap: false,
     configureWebpack: {
         externals: {
             vue: 'Vue',
@@ -10,7 +10,7 @@ module.exports = {
 	devServer: {
 		proxy: {
 			"/messager": {
-				target: "http://messager.git.suconghou.cn:8070",
+				target: "http://127.0.0.1:9988",
 				changeOrigin: true
 			}
 		}
